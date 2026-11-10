@@ -1,8 +1,12 @@
-const { Pool } = require("/app/.next/standalone/node_modules/pg");
+const { Pool } = require("pg");
 const fs = require("fs");
 const path = require("path");
 
 async function main() {
+  if (!process.env.DATABASE_URL) {
+    console.log("No DATABASE_URL provided. Skipping schema check.");
+    return;
+  }
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });
   try {
     const res = await pool.query("SELECT to_regclass('public.config') as exists");
@@ -25,4 +29,3 @@ async function main() {
 }
 
 main().catch(console.error);
-
