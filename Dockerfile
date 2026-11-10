@@ -27,19 +27,21 @@ RUN apk add --no-cache curl
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV NODE_PATH=/app/.next/standalone/node_modules
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 # Crear usuario no-root para seguridad
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copiar solo lo necesario del builder
+# En Next.js standalone:
+# El standalone se copia al root /app, y .next/static y public deben ubicarse en /app/.next/static y /app/public
 RUN mkdir -p ./public
 COPY --from=builder /app/public* ./public/
-COPY --from=builder /app/.next/standalone ./.next/standalone
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/db ./db
-COPY --from=builder /app/scripts ./scripts
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/db ./db
+COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
 
 # Cambiar ownership al usuario no-root
 RUN chown -R nextjs:nodejs /app
@@ -48,5 +50,5 @@ USER nextjs
 # Exponer puerto
 EXPOSE 3000
 
-# Comando de inicio con auto-migración
-CMD ["node", "-e", "require('./scripts/auto-init.js'); require('./.next/standalone/server.js');"]
+# Comando de inicio con auto-migración y servidor standalone
+CMD ["node", "-e", "require('./scripts/auto-init.js'); require('./server.js');"]
