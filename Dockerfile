@@ -24,6 +24,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_PATH=/app/.next/standalone/node_modules
 
 # Crear usuario no-root para seguridad
 RUN addgroup --system --gid 1001 nodejs
