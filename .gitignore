@@ -1,0 +1,13 @@
+node_modules
+.next
+.env
+.env.production
+db_backups/
+certbot/
+*.sql
+*.sql.gz
+playwright-report/
+test-results/
+.git_payload.json
+.batch*.json
+.part*.json
