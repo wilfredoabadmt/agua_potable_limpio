@@ -8,6 +8,3 @@ certbot/
 *.sql.gz
 playwright-report/
 test-results/
-.git_payload.json
-.batch*.json
-.part*.json
