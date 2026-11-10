@@ -4,6 +4,8 @@ node_modules
 .env.production
 db_backups/
 certbot/
+# Allow schema.sql
+!db/schema.sql
 *.sql
 *.sql.gz
 playwright-report/
