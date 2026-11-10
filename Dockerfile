@@ -22,6 +22,9 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
+# Instalar curl para healthcheck
+RUN apk add --no-cache curl
+
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_PATH=/app/.next/standalone/node_modules
